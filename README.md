@@ -30,12 +30,12 @@ A feature-rich Chrome extension for managing your daily tasks with deadline trac
 
 ### Deadline Tracking
 - Color-coded task urgency:
-  - 🟢 Green: Due within 1 hour
-  - 💛 Light Yellow: Due within 24 hours
-  - 🟡 Yellow: Due within 12 hours
-  - 🟠 Light Orange: Due within 6 hours
-  - 🔸 Orange: Due within 3 hours
-  - 🔴 Red: Overdue
+  - 💛 Light Yellow: Due within 72 hours
+  - 🟡 Yellow: Due within 48 hours
+  - 🟠 Light Orange: Due within 8 hours
+  - 🔸 Orange: Due within 5 hours
+  - 🔴 Red: Due within 2 hours
+  - ❗ Dark Red: Overdue
 
 ### Task Organization
 - Separate views for:
