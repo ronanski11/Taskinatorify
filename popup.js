@@ -7,9 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const viewButtons = document.querySelectorAll(".view-btn");
   const views = document.querySelectorAll(".view");
   const sortFilter = document.getElementById("sort-filter");
-  const statusFilter = document.getElementById("status-filter");
   const historyDateFilter = document.getElementById("history-date-filter");
   const historyTypeFilter = document.getElementById("history-type-filter");
+  const completedList = document.getElementById("completed-list");
+  const completedSortFilter = document.getElementById("completed-sort-filter");
 
   // Set minimum date and default value for deadline to now
   const now = new Date();
@@ -18,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   deadlineInput.min = nowString;
   deadlineInput.value = nowString;
 
-  // Initialize views
   function initializeViews() {
     viewButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -31,9 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Update empty states
   function updateEmptyState(view) {
-    const list = view === "tasks" ? todoList : historyList;
+    const list =
+      view === "tasks"
+        ? todoList
+        : view === "completed"
+        ? completedList
+        : historyList;
     const emptyState = list.parentElement.querySelector(".empty-state");
     if (list.children.length === 0) {
       emptyState.style.display = "block";
@@ -42,112 +46,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Load and render todos
-  async function loadTodos() {
-    const result = await chrome.storage.local.get(["todos"]);
-    const todos = result.todos || [];
-    renderTodos(todos);
-  }
+  function getDueStatusClass(deadline) {
+    if (!deadline) return "";
 
-  // Load and render history
-  async function loadHistory() {
-    const result = await chrome.storage.local.get(["history"]);
-    const history = result.history || [];
-    renderHistory(history);
-  }
-
-  // Add new todo
-  async function addNewTodo() {
-    const text = todoInput.value.trim();
-    const deadline = deadlineInput.value;
-
-    if (text) {
-      const newTodo = {
-        id: Date.now(),
-        text: text,
-        completed: false,
-        dateAdded: new Date().toISOString(),
-        deadline: deadline || null,
-      };
-
-      const result = await chrome.storage.local.get(["todos", "history"]);
-      const todos = result.todos || [];
-      const history = result.history || [];
-
-      todos.push(newTodo);
-      history.push({
-        type: "added",
-        todoId: newTodo.id,
-        text: newTodo.text,
-        date: new Date().toISOString(),
-      });
-
-      await chrome.storage.local.set({ todos, history });
-      renderTodos(todos);
-      renderHistory(history);
-
-      todoInput.value = "";
-      // Reset deadline to current time
-      const newNow = new Date();
-      newNow.setMinutes(newNow.getMinutes() - newNow.getTimezoneOffset());
-      deadlineInput.value = newNow.toISOString().slice(0, 16);
-    }
-  }
-
-  // Filter and sort todos
-  function filterAndSortTodos(todos) {
-    const status = statusFilter.value;
-    const sort = sortFilter.value;
     const now = new Date();
+    const dueDate = new Date(deadline);
+    const hoursUntilDue = (dueDate - now) / (1000 * 60 * 60);
 
-    // Filter
-    let filtered = todos.filter((todo) => {
-      switch (status) {
-        case "active":
-          return !todo.completed;
-        case "completed":
-          return todo.completed;
-        case "upcoming":
-          return (
-            !todo.completed && todo.deadline && new Date(todo.deadline) > now
-          );
-        case "overdue":
-          return (
-            !todo.completed && todo.deadline && new Date(todo.deadline) < now
-          );
-        default:
-          return true;
-      }
-    });
-
-    // Sort
-    filtered.sort((a, b) => {
-      switch (sort) {
-        case "deadline":
-          if (!a.deadline) return 1;
-          if (!b.deadline) return -1;
-          return new Date(a.deadline) - new Date(b.deadline);
-        case "added":
-          return new Date(b.dateAdded) - new Date(a.dateAdded);
-        case "name":
-          return a.text.localeCompare(b.text);
-        default:
-          return 0;
-      }
-    });
-
-    return filtered;
+    if (hoursUntilDue < 0) return "overdue";
+    if (hoursUntilDue <= 2) return "due-now";
+    if (hoursUntilDue <= 8) return "due-very-soon";
+    if (hoursUntilDue <= 24) return "due-soon-3";
+    if (hoursUntilDue <= 48) return "due-soon-2";
+    if (hoursUntilDue <= 72) return "due-soon-1";
+    return "";
   }
 
-  // Format date for display
   function formatDate(dateString) {
     if (!dateString) return "";
     const date = new Date(dateString);
     const now = new Date();
     const isToday = date.toDateString() === now.toDateString();
-    const isTomorrow =
-      new Date(now.setDate(now.getDate() + 1)).toDateString() ===
-      date.toDateString();
+
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const isTomorrow = date.toDateString() === tomorrow.toDateString();
 
     if (isToday) {
       return `Today at ${date.toLocaleTimeString([], {
@@ -169,18 +92,107 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Render todos
-  function renderTodos(todos) {
-    const filtered = filterAndSortTodos(todos);
-    todoList.innerHTML = "";
+  async function addNewTodo() {
+    const text = todoInput.value.trim();
+    const deadline = deadlineInput.value;
+
+    if (text) {
+      const newTodo = {
+        id: Date.now(),
+        text: text,
+        completed: false,
+        dateAdded: new Date().toISOString(),
+        deadline: deadline || null,
+        completedDate: null,
+      };
+
+      const result = await chrome.storage.local.get(["todos", "history"]);
+      const todos = result.todos || [];
+      const history = result.history || [];
+
+      todos.push(newTodo);
+      history.push({
+        type: "added",
+        todoId: newTodo.id,
+        text: newTodo.text,
+        date: new Date().toISOString(),
+      });
+
+      await chrome.storage.local.set({ todos, history });
+
+      todoInput.value = "";
+      const newNow = new Date();
+      newNow.setMinutes(newNow.getMinutes() - newNow.getTimezoneOffset());
+      deadlineInput.value = newNow.toISOString().slice(0, 16);
+
+      await loadTodos();
+      renderHistory(history);
+    }
+  }
+
+  function filterAndSortTodos(todos, view = "tasks") {
+    let filtered = todos.filter((todo) => {
+      if (view === "completed") return todo.completed;
+      if (view === "tasks") return !todo.completed;
+      return true;
+    });
+
+    const sort =
+      view === "completed" ? completedSortFilter.value : sortFilter.value;
+    const now = new Date();
+
+    filtered.sort((a, b) => {
+      switch (sort) {
+        case "completed-date":
+          return (
+            new Date(b.completedDate || 0) - new Date(a.completedDate || 0)
+          );
+        case "deadline":
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return new Date(a.deadline) - new Date(b.deadline);
+        case "added":
+          return new Date(b.dateAdded) - new Date(a.dateAdded);
+        case "name":
+          return a.text.localeCompare(b.text);
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }
+
+  function filterHistory(history) {
+    const switchedHistory = [...history].reverse();
+    const type = historyTypeFilter.value;
+    const date = historyDateFilter.value;
+
+    return switchedHistory.filter((item) => {
+      const matchesType = type === "all" || item.type === type;
+      const matchesDate =
+        !date ||
+        new Date(item.date).toDateString() === new Date(date).toDateString();
+      return matchesType && matchesDate;
+    });
+  }
+
+  function renderTodos(todos, view = "tasks") {
+    const filtered = filterAndSortTodos(todos, view);
+    const targetList = view === "completed" ? completedList : todoList;
+
+    if (!targetList) return;
+
+    targetList.innerHTML = "";
 
     filtered.forEach((todo) => {
       const div = document.createElement("div");
-      div.className = `todo-item ${todo.completed ? "completed" : ""} ${
-        !todo.completed && todo.deadline && new Date(todo.deadline) < new Date()
-          ? "overdue"
-          : ""
-      }`;
+      const statusClass = !todo.completed
+        ? getDueStatusClass(todo.deadline)
+        : "";
+      div.className = `todo-item ${
+        todo.completed ? "completed" : ""
+      } ${statusClass}`;
 
       div.innerHTML = `
         <div class="checkbox-wrapper">
@@ -199,6 +211,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   )}</span>`
                 : ""
             }
+            ${
+              todo.completedDate
+                ? `<span class="completed-date">Completed ${formatDate(
+                    todo.completedDate
+                  )}</span>`
+                : ""
+            }
           </div>
         </div>
         <button class="delete-btn">
@@ -208,27 +227,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const checkbox = div.querySelector(".custom-checkbox");
       checkbox.addEventListener("change", async () => {
-        todo.completed = checkbox.checked;
-        div.classList.toggle("completed");
-
-        const result = await chrome.storage.local.get(["todos", "history"]);
-        const todos = result.todos || [];
-        const history = result.history || [];
-
-        const index = todos.findIndex((t) => t.id === todo.id);
-        if (index !== -1) {
-          todos[index] = todo;
-
-          history.push({
-            type: "completed",
-            todoId: todo.id,
-            text: todo.text,
-            date: new Date().toISOString(),
-          });
-
-          await chrome.storage.local.set({ todos, history });
-          renderHistory(history);
-        }
+        checkbox.checked = !checkbox.checked;
+        completeTask(todo, checkbox, div);
+      });
+      div.addEventListener("click", () => {
+        checkbox.checked = !checkbox.checked;
+        completeTask(todo, checkbox, div);
       });
 
       const deleteBtn = div.querySelector(".delete-btn");
@@ -237,10 +241,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(async () => {
           const result = await chrome.storage.local.get(["todos", "history"]);
-          const todos = result.todos || [];
+          const updatedTodos = result.todos || [];
           const history = result.history || [];
 
-          const filteredTodos = todos.filter((t) => t.id !== todo.id);
+          const filteredTodos = updatedTodos.filter((t) => t.id !== todo.id);
           history.push({
             type: "deleted",
             todoId: todo.id,
@@ -249,32 +253,48 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
           await chrome.storage.local.set({ todos: filteredTodos, history });
-          renderTodos(filteredTodos);
+          renderTodos(filteredTodos, "tasks");
+          renderTodos(filteredTodos, "completed");
           renderHistory(history);
         }, 300);
       });
 
-      todoList.appendChild(div);
+      targetList.appendChild(div);
     });
 
-    updateEmptyState("tasks");
+    updateEmptyState(view);
   }
 
-  // Filter history
-  function filterHistory(history) {
-    const type = historyTypeFilter.value;
-    const date = historyDateFilter.value;
+  async function completeTask(todo, checkbox, div) {
+    todo.completed = checkbox.checked;
+    todo.completedDate = todo.completed ? new Date().toISOString() : null;
 
-    return history.filter((item) => {
-      const matchesType = type === "all" || item.type === type;
-      const matchesDate =
-        !date ||
-        new Date(item.date).toDateString() === new Date(date).toDateString();
-      return matchesType && matchesDate;
-    });
+    const result = await chrome.storage.local.get(["todos", "history"]);
+    const updatedTodos = result.todos || [];
+    const history = result.history || [];
+
+    const index = updatedTodos.findIndex((t) => t.id === todo.id);
+    if (index !== -1) {
+      updatedTodos[index] = todo;
+
+      history.push({
+        type: todo.completed ? "completed" : "uncompleted",
+        todoId: todo.id,
+        text: todo.text,
+        date: new Date().toISOString(),
+      });
+
+      await chrome.storage.local.set({ todos: updatedTodos, history });
+
+      div.classList.add("fade-out");
+      setTimeout(() => {
+        renderTodos(updatedTodos, "tasks");
+        renderTodos(updatedTodos, "completed");
+        renderHistory(history);
+      }, 300);
+    }
   }
 
-  // Render history
   function renderHistory(history) {
     const filtered = filterHistory(history);
     historyList.innerHTML = "";
@@ -286,6 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const actionText = {
         added: "Added task",
         completed: "Completed task",
+        uncompleted: "Uncompleted task",
         deleted: "Deleted task",
       };
 
@@ -296,8 +317,10 @@ document.addEventListener("DOMContentLoaded", () => {
               ? "plus"
               : item.type === "completed"
               ? "check"
+              : item.type === "uncompleted"
+              ? "undo text-black"
               : "trash-alt"
-          }"></i>
+          }" style="color: ${item.type === "uncompleted" ? "black" : "auto"}"></i>
         </div>
         <div class="history-content">
           <div class="history-text">${actionText[item.type]}: ${item.text}</div>
@@ -311,6 +334,19 @@ document.addEventListener("DOMContentLoaded", () => {
     updateEmptyState("history");
   }
 
+  async function loadTodos() {
+    const result = await chrome.storage.local.get(["todos"]);
+    const todos = result.todos || [];
+    renderTodos(todos, "tasks");
+    renderTodos(todos, "completed");
+  }
+
+  async function loadHistory() {
+    const result = await chrome.storage.local.get(["history"]);
+    const history = result.history || [];
+    renderHistory(history);
+  }
+
   // Initialize event listeners
   addButton.addEventListener("click", addNewTodo);
 
@@ -321,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   sortFilter.addEventListener("change", loadTodos);
-  statusFilter.addEventListener("change", loadTodos);
+  completedSortFilter.addEventListener("change", loadTodos);
   historyDateFilter.addEventListener("change", loadHistory);
   historyTypeFilter.addEventListener("change", loadHistory);
 

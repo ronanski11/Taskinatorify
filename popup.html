@@ -10,11 +10,15 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>My Tasks</h1>
+      <h1>Taskinatorifyly</h1>
       <div class="view-toggle">
         <button class="view-btn active" data-view="tasks">
           <i class="fas fa-tasks"></i>
-          Tasks
+          Active
+        </button>
+        <button class="view-btn" data-view="completed">
+          <i class="fas fa-check-circle"></i>
+          Completed
         </button>
         <button class="view-btn" data-view="history">
           <i class="fas fa-history"></i>
@@ -36,19 +40,26 @@
           <option value="added">Sort by Date Added</option>
           <option value="name">Sort by Name</option>
         </select>
-        <select id="status-filter">
-          <option value="all">All Tasks</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-          <option value="upcoming">Upcoming</option>
-          <option value="overdue">Overdue</option>
-        </select>
       </div>
 
       <div id="todo-list"></div>
       <div class="empty-state">
         <i class="fas fa-tasks"></i>
         <p>No tasks yet. Add one above!</p>
+      </div>
+    </div>
+
+    <div id="completed-view" class="view">
+      <div class="filters">
+        <select id="completed-sort-filter">
+          <option value="completed-date">Sort by Completion Date</option>
+          <option value="name">Sort by Name</option>
+        </select>
+      </div>
+      <div id="completed-list"></div>
+      <div class="empty-state">
+        <i class="fas fa-check-circle"></i>
+        <p>No completed tasks yet!</p>
       </div>
     </div>
 

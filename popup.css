@@ -1,5 +1,5 @@
 body {
-    width: 550px;
+    width: 600px;
     min-height: 500px;
     padding: 20px;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -41,7 +41,7 @@ h1 {
     background: #f1f3f5;
     border: none;
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 12px 24px;
     cursor: pointer;
     font-size: 14px;
     color: #495057;
@@ -104,10 +104,6 @@ h1 {
     margin-bottom: 15px;
 }
 
-.history-filters {
-    justify-content: space-between
-}
-
 select, .date-filter {
     padding: 8px 12px;
     border: 1px solid #e9ecef;
@@ -141,20 +137,48 @@ select, .date-filter {
     background: #f8f9fa;
     border-radius: 8px;
     transition: all 0.3s;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+}
+
+/* Due date color states */
+.todo-item.due-now {
+    background: #d4edda;
+    border-left-color: #28a745;
+}
+
+.todo-item.due-soon-1 {
+    background: #fff3cd;
+    border-left-color: #ffd700;
+}
+
+.todo-item.due-soon-2 {
+    background: #ffe5d0;
+    border-left-color: #ffa500;
+}
+
+.todo-item.due-soon-3 {
+    background: #ffddcc;
+    border-left-color: #ff8c00;
+}
+
+.todo-item.due-very-soon {
+    background: #ffd0c9;
+    border-left-color: #ff4500;
+}
+
+.todo-item.overdue {
+    background: #f8d7da;
+    border-left-color: #dc3545;
 }
 
 .todo-item:hover {
-    transform: translateX(5px);
-    background: #e9ecef;
+    transform: scale(1.02);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .todo-item.completed {
     opacity: 0.7;
-}
-
-.todo-item.completed .todo-text {
-    text-decoration: line-through;
-    color: #868e96;
 }
 
 .todo-item.overdue .deadline {
@@ -163,6 +187,10 @@ select, .date-filter {
 
 .checkbox-wrapper {
     margin-right: 12px;
+}
+
+.custom-checkbox {
+    cursor: pointer;
 }
 
 .todo-content {
@@ -245,24 +273,6 @@ select, .date-filter {
 .history-date {
     color: #868e96;
     font-size: 12px;
-}
-
-#history-date-filter, #history-type-filter {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #495057;
-}
-
-#sort-filter, #status-filter {
-    width: 100%;
-    padding: 8px 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #495057;
 }
 
 .empty-state {
