@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (hoursUntilDue < 0) return "overdue";
     if (hoursUntilDue <= 2) return "due-now";
-    if (hoursUntilDue <= 8) return "due-very-soon";
-    if (hoursUntilDue <= 24) return "due-soon-3";
+    if (hoursUntilDue <= 5) return "due-very-soon";
+    if (hoursUntilDue <= 8) return "due-soon-3";
     if (hoursUntilDue <= 48) return "due-soon-2";
     if (hoursUntilDue <= 72) return "due-soon-1";
     return "";
