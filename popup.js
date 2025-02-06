@@ -226,7 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const checkbox = div.querySelector(".custom-checkbox");
       checkbox.addEventListener("change", async () => {
-        checkbox.checked = !checkbox.checked;
         completeTask(todo, checkbox, div);
       });
       div.querySelector(".todo-content").addEventListener("click", () => {
