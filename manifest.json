@@ -1,18 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Simple Todo List",
-  "version": "1.0",
+  "name": "Taskinatorify",
+  "version": "2.1.0",
   "description": "A simple todo list extension",
   "permissions": ["storage"],
   "icons": {
-      "48": "icon48.png",
-      "128": "icon128.png"
+      "48": "newIcon48.png",
+      "128": "newIcon128.png"
     },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "48": "icon48.png",
-      "128": "icon128.png"
+      "48": "newIcon48.png",
+      "128": "newIcon128.png"
     }
   }
 }
