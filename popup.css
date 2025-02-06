@@ -30,6 +30,18 @@ h1 {
     text-align: center;
 }
 
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.title-logo {
+    height: 30px;
+    width: 30px;
+}
+
 .view-toggle {
     display: flex;
     gap: 10px;
@@ -138,7 +150,6 @@ select, .date-filter {
     border-radius: 8px;
     transition: all 0.3s;
     border-left: 4px solid transparent;
-    cursor: pointer;
 }
 
 /* Due date color states */
@@ -195,6 +206,7 @@ select, .date-filter {
 
 .todo-content {
     flex-grow: 1;
+    cursor: pointer;
 }
 
 .todo-text {

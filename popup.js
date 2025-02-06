@@ -117,8 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         text: newTodo.text,
         date: new Date().toISOString(),
       });
-
-      await chrome.storage.local.set({ todos, history });
+      await chrome.storage.local.set({ todos, history: limitHistory(history) });
 
       todoInput.value = "";
       const newNow = new Date();
@@ -230,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
         checkbox.checked = !checkbox.checked;
         completeTask(todo, checkbox, div);
       });
-      div.addEventListener("click", () => {
+      div.querySelector(".todo-content").addEventListener("click", () => {
         checkbox.checked = !checkbox.checked;
         completeTask(todo, checkbox, div);
       });
@@ -252,7 +251,10 @@ document.addEventListener("DOMContentLoaded", () => {
             date: new Date().toISOString(),
           });
 
-          await chrome.storage.local.set({ todos: filteredTodos, history });
+          await chrome.storage.local.set({
+            todos: filteredTodos,
+            history: limitHistory(history),
+          });
           renderTodos(filteredTodos, "tasks");
           renderTodos(filteredTodos, "completed");
           renderHistory(history);
@@ -284,7 +286,10 @@ document.addEventListener("DOMContentLoaded", () => {
         date: new Date().toISOString(),
       });
 
-      await chrome.storage.local.set({ todos: updatedTodos, history });
+      await chrome.storage.local.set({
+        todos: updatedTodos,
+        history: limitHistory(history),
+      });
 
       div.classList.add("fade-out");
       setTimeout(() => {
@@ -339,6 +344,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const todos = result.todos || [];
     renderTodos(todos, "tasks");
     renderTodos(todos, "completed");
+  }
+
+  function limitHistory(history) {
+    return history.slice(-30); // Keep only the most recent 30 items
   }
 
   async function loadHistory() {
