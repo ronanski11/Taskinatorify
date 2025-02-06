@@ -4,7 +4,7 @@ A feature-rich Chrome extension for managing your daily tasks with deadline trac
 
 # Screenshots
 
-<div style="display: flex; justify-content: space-between; align-items: top;">
+<div style="display: flex; justify-content: space-between;">
     <img src="/images/Active.png" alt="active" width="32%" />
     <img src="/images/Completed.png" alt="completed" width="32%" />
     <img src="/images/History.png" alt="history" width="32%" />
