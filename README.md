@@ -2,7 +2,13 @@
 
 A feature-rich Chrome extension for managing your daily tasks with deadline tracking and comprehensive history. Built with vanilla JavaScript and modern CSS, this extension offers an intuitive interface for organizing your todos with intelligent deadline management and task tracking. 
 
-![Extension Preview](preview.png)
+# Screenshots
+
+<div style="display: flex; justify-content: space-between;">
+    <img src="/images/Active.png" alt="active" width="32%" />
+    <img src="/images/Completed.png" alt="completed" width="32%" />
+    <img src="/images/History.png" alt="history" width="32%" />
+</div>
 
 ## Features
 
