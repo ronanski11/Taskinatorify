@@ -1,21 +1,56 @@
-# Clean Todo List Chrome Extension
+# Taskinatorify
 
-A beautifully designed, minimal Chrome extension for managing your daily tasks. Built with vanilla JavaScript and styled with modern CSS, this extension offers a clean and intuitive interface for organizing your todos.
+A feature-rich Chrome extension for managing your daily tasks with deadline tracking and comprehensive history. Built with vanilla JavaScript and modern CSS, this extension offers an intuitive interface for organizing your todos with intelligent deadline management and task tracking.
 
 ![Extension Preview](preview.png)
 
 ## Features
 
-- 🎯 Clean, minimal interface
+- 🎯 Clean, minimal interface with tabbed navigation
+- ⏰ Smart deadline management with color-coded urgency
+- 📊 Separate views for active and completed tasks
+- 📜 Comprehensive task history tracking
 - 💾 Persistent storage across browser sessions
 - ✨ Smooth animations and transitions
 - 📱 Responsive design
 - ✅ Custom checkbox styling
 - 🗑️ Easy task deletion
-- 🎨 Modern color scheme
+- 🎨 Dynamic color scheme based on task urgency
 - 🌙 Properly spaced layout
-- 📝 Easy task input
-- 🔄 Real-time updates
+- 📝 Enhanced task input with deadline picker
+- 🔄 Real-time updates and filtering
+
+## Task Management Features
+
+### Deadline Tracking
+- Color-coded task urgency:
+  - 🟢 Green: Due within 1 hour
+  - 💛 Light Yellow: Due within 24 hours
+  - 🟡 Yellow: Due within 12 hours
+  - 🟠 Light Orange: Due within 6 hours
+  - 🔸 Orange: Due within 3 hours
+  - 🔴 Red: Overdue
+
+### Task Organization
+- Separate views for:
+  - Active tasks
+  - Completed tasks
+  - Task history
+- Multiple sorting options:
+  - By deadline
+  - By date added
+  - By name
+  - By completion date (for completed tasks)
+
+### Task Filtering
+- Filter tasks by:
+  - All tasks
+  - Active tasks
+  - Upcoming tasks
+  - Overdue tasks
+- History filtering by:
+  - Date
+  - Activity type (added, completed, deleted)
 
 ## Installation
 
@@ -38,28 +73,22 @@ git clone https://github.com/ronanski11/Todo-Extension.git
 1. Click the extension icon in your Chrome toolbar to open the todo list
 2. Add new tasks:
    - Type your task in the input field
+   - Set a deadline using the datetime picker
    - Press Enter or click the "Add" button
 3. Manage tasks:
    - Click the checkbox to mark a task as complete
-   - Hover over a task to reveal the delete button
-   - Click the trash icon to remove a task
-4. All changes are automatically saved and persist across browser sessions
-
-## Project Structure
-
-```
-clean-todo-extension/
-├── manifest.json        # Extension configuration
-├── popup.html          # Main extension interface
-├── popup.js            # Core functionality
-├── README.md           # Documentation
-└── preview.png         # Extension screenshot
-```
+   - Tasks automatically move to the completed tab when checked
+   - Use the tabs to switch between active tasks, completed tasks, and history
+   - Sort and filter tasks using the dropdown menus
+4. Track task history:
+   - View all task activities in the history tab
+   - Filter history by date or activity type
+   - See when tasks were added, completed, or deleted
 
 ## Technical Details
 
 ### Local Storage
-The extension uses Chrome's `storage.local` API to persist todos. Tasks are stored in the following format:
+The extension uses Chrome's `storage.local` API to persist todos and history. Data is stored in the following format:
 
 ```javascript
 {
@@ -67,18 +96,30 @@ The extension uses Chrome's `storage.local` API to persist todos. Tasks are stor
     {
       id: number,
       text: string,
-      completed: boolean
+      completed: boolean,
+      dateAdded: string (ISO date),
+      deadline: string (ISO date),
+      completedDate: string (ISO date) | null
+    }
+  ],
+  history: [
+    {
+      type: "added" | "completed" | "uncompleted" | "deleted",
+      todoId: number,
+      text: string,
+      date: string (ISO date)
     }
   ]
 }
 ```
 
 ### Styling
-- Custom CSS variables for consistent theming
-- Font Awesome icons for visual elements
-- Responsive design principles
-- CSS transitions for smooth interactions
-- Modern box-shadow and border-radius for depth
+- Dynamic color-coding based on task urgency
+- Tabbed interface for different views
+- Custom datetime picker styling
+- Enhanced visual feedback for task states
+- Smooth transitions between views
+- Modern design with clear visual hierarchy
 
 ## Development
 
@@ -88,7 +129,7 @@ The extension uses Chrome's `storage.local` API to persist todos. Tasks are stor
 - Text editor of your choice
 
 ### Making Changes
-1. Clone the repository
+1. Clone the repository 
 2. Make your desired changes to the source files
 3. Test the extension locally:
    - Navigate to `chrome://extensions/`
@@ -128,11 +169,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have feature requests, please file an issue on the GitHub repository.
 
-## Future Improvements
+## Future Improvement Ideas
 
 - [ ] Dark mode support
 - [ ] Task categories/labels
-- [ ] Due dates for tasks
 - [ ] Task priority levels
 - [ ] Export/import functionality
 - [ ] Keyboard shortcuts
@@ -142,9 +182,11 @@ If you encounter any issues or have feature requests, please file an issue on th
 - [ ] Undo delete action
 - [ ] Task reordering
 - [ ] Browser sync support
+- [ ] Recurring tasks
+- [ ] Task sharing capabilities
+- [ ] Custom deadline presets
+- [ ] Task statistics and analytics
 
 ## Author
 
 Ronan Coughlan
-
-Project Link: [https://github.com/ronanski11/Todo-Extension](https://github.com/ronanski11/Todo-Extension)
