@@ -144,7 +144,7 @@ select, .date-filter {
 /* Due date color states */
 .todo-item.due-now {
     background: #d4edda;
-    border-left-color: #28a745;
+    border-left-color: #940000;
 }
 
 .todo-item.due-soon-1 {
