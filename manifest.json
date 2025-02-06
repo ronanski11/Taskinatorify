@@ -4,10 +4,10 @@
   "version": "1.0",
   "description": "A simple todo list extension",
   "permissions": ["storage"],
-"icons": {
-    "48": "icon48.png",
-    "128": "icon128.png"
-  },
+  "icons": {
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

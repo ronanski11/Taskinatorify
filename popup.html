@@ -2,22 +2,71 @@
 <html>
 
 <head>
-  <title>Todo List</title>
+  <title>Enhanced Todo List</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="popup.css" rel="stylesheet">
 </head>
 
 <body>
   <div class="container">
-    <h1>My Tasks</h1>
-    <div class="input-container">
-      <input type="text" id="new-todo" placeholder="Add a new task...">
-      <button class="add-btn">Add</button>
+    <div class="header">
+      <h1>My Tasks</h1>
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="tasks">
+          <i class="fas fa-tasks"></i>
+          Tasks
+        </button>
+        <button class="view-btn" data-view="history">
+          <i class="fas fa-history"></i>
+          History
+        </button>
+      </div>
     </div>
-    <div id="todo-list"></div>
-    <div class="empty-state">
-      <i class="fas fa-tasks"></i>
-      <p>No tasks yet. Add one above!</p>
+
+    <div id="tasks-view" class="view active">
+      <div class="input-container">
+        <input type="text" id="new-todo" placeholder="Add a new task...">
+        <input type="datetime-local" id="todo-deadline" class="deadline-input">
+        <button class="add-btn">Add</button>
+      </div>
+
+      <div class="filters">
+        <select id="sort-filter">
+          <option value="deadline">Sort by Deadline</option>
+          <option value="added">Sort by Date Added</option>
+          <option value="name">Sort by Name</option>
+        </select>
+        <select id="status-filter">
+          <option value="all">All Tasks</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="upcoming">Upcoming</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+
+      <div id="todo-list"></div>
+      <div class="empty-state">
+        <i class="fas fa-tasks"></i>
+        <p>No tasks yet. Add one above!</p>
+      </div>
+    </div>
+
+    <div id="history-view" class="view">
+      <div class="history-filters">
+        <input type="date" id="history-date-filter" class="date-filter">
+        <select id="history-type-filter">
+          <option value="all">All Activities</option>
+          <option value="added">Added Tasks</option>
+          <option value="completed">Completed Tasks</option>
+          <option value="deleted">Deleted Tasks</option>
+        </select>
+      </div>
+      <div id="history-list"></div>
+      <div class="empty-state">
+        <i class="fas fa-history"></i>
+        <p>No activity yet!</p>
+      </div>
     </div>
   </div>
   <script src="popup.js"></script>
