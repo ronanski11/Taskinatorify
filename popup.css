@@ -143,8 +143,8 @@ select, .date-filter {
 
 /* Due date color states */
 .todo-item.due-now {
-    background: #ff9090;
-    border-left-color: #e10000;
+    background: #f7c9cd;
+    border-left-color: #dc3545;
 }
 
 .todo-item.due-soon-1 {
@@ -163,13 +163,13 @@ select, .date-filter {
 }
 
 .todo-item.due-very-soon {
-    background: #ffd0c9;
+    background: #fedbd5;
     border-left-color: #ff4500;
 }
 
 .todo-item.overdue {
-    background: #f8d7da;
-    border-left-color: #dc3545;
+    background: #f3babe;
+    border-left-color: #9a000f;
 }
 
 .todo-item:hover {
