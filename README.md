@@ -1,6 +1,6 @@
 # Taskinatorify
 
-A feature-rich Chrome extension for managing your daily tasks with deadline tracking and comprehensive history. Built with vanilla JavaScript and modern CSS, this extension offers an intuitive interface for organizing your todos with intelligent deadline management and task tracking.
+A feature-rich Chrome extension for managing your daily tasks with deadline tracking and comprehensive history. Built with vanilla JavaScript and modern CSS, this extension offers an intuitive interface for organizing your todos with intelligent deadline management and task tracking. 
 
 ![Extension Preview](preview.png)
 
@@ -190,3 +190,7 @@ If you encounter any issues or have feature requests, please file an issue on th
 ## Author
 
 Ronan Coughlan
+
+##### Disclaimer
+
+This only took me a few hours to complete. This is **not** some huge project of mine.
