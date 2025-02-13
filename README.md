@@ -203,7 +203,7 @@ Ronan Coughlan
     <div style="display: flex; align-items: center; gap: 10px;">
         <img
             src="https://avatars.githubusercontent.com/u/102829294"
-            style="height: 40px; border-radius: 100%"
+            style="height: 40px; border-radius: 100%;"
         />
         <p style="margin: 0;">elRatto21</p>
     </div>
