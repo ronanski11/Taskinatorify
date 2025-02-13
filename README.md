@@ -199,14 +199,8 @@ Ronan Coughlan
 
 ### Contributers
 
-<a href="https://github.com/elRatto21">
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <img
-            src="https://avatars.githubusercontent.com/u/102829294"
-            style="height: 40px; border-radius: 100%;"
-        />
-        <p style="margin: 0;">elRatto21</p>
-    </div>
+<a href="https://github.com/ronanski11/Todo-Extension/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ronanski11/Todo-Extension" />
 </a>
 
 ##### Disclaimer
