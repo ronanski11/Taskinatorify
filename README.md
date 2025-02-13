@@ -197,6 +197,18 @@ If you encounter any issues or have feature requests, please file an issue on th
 
 Ronan Coughlan
 
+### Contributers
+
+<a href="https://github.com/elRatto21">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <img
+            src="https://avatars.githubusercontent.com/u/102829294"
+            style="height: 40px; border-radius: 100%"
+        />
+        <p style="margin: 0;">elRatto21</p>
+    </div>
+</a>
+
 ##### Disclaimer
 
 This only took me a few hours to complete. This is **not** some huge project of mine.
