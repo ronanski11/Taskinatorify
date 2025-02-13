@@ -12,17 +12,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const completedList = document.getElementById("completed-list");
   const completedSortFilter = document.getElementById("completed-sort-filter");
   const deadlineToggleBtn = document.querySelector(".deadline-toggle-btn");
+  const deadlineCancelBtn = document.querySelector(".cancel-toggle-btn");
+  const deadlineContainer = document.querySelector(
+    ".deadline-cancel-btn-container"
+  );
 
-  deadlineToggleBtn.addEventListener("click", function() {
-    this.style.display = 'none';
-    deadlineInput.classList.remove("hidden");
-    
+  deadlineToggleBtn.addEventListener("click", function () {
+    deadlineToggleBtn.classList.add("hidden");
+    deadlineContainer.classList.remove("hidden");
+
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     const nowString = now.toISOString().slice(0, 16);
     deadlineInput.min = nowString;
     deadlineInput.value = nowString;
     deadlineInput.focus();
+  });
+
+  deadlineCancelBtn.addEventListener("click", function () {
+    deadlineToggleBtn.classList.remove("hidden");
+    deadlineContainer.classList.add("hidden");
   });
 
   function initializeViews() {
@@ -100,7 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function addNewTodo() {
     const text = todoInput.value.trim();
-    const deadline = deadlineInput.classList.contains("hidden") ? null : deadlineInput.value;
+    const deadline = deadlineContainer.classList.contains("hidden")
+      ? null
+      : deadlineInput.value;
 
     if (text) {
       const newTodo = {
@@ -130,8 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       newNow.setMinutes(newNow.getMinutes() - newNow.getTimezoneOffset());
       deadlineInput.value = newNow.toISOString().slice(0, 16);
 
-      deadlineInput.classList.add("hidden");
-      deadlineToggleBtn.style.display = '';
+      deadlineToggleBtn.style.display = "";
 
       await loadTodos();
       renderHistory(history);
@@ -333,7 +343,9 @@ document.addEventListener("DOMContentLoaded", () => {
               : item.type === "uncompleted"
               ? "undo text-black"
               : "trash-alt"
-          }" style="color: ${item.type === "uncompleted" ? "black" : "auto"}"></i>
+          }" style="color: ${
+        item.type === "uncompleted" ? "black" : "auto"
+      }"></i>
         </div>
         <div class="history-content">
           <div class="history-text">${actionText[item.type]}: ${item.text}</div>

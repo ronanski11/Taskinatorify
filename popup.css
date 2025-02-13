@@ -1,5 +1,5 @@
 body {
-  width: 600px;
+  width: 700px;
   min-height: 500px;
   padding: 20px;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -309,7 +309,7 @@ select,
   transform: translateX(20px);
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .deadline-toggle-btn {
@@ -324,6 +324,29 @@ select,
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.cancel-toggle-btn {
+  height: 100%;
+  width: 40px;
+  background: #f1f3f5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #495057;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.deadline-cancel-btn-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  align-items: center;
 }
 
 .deadline-toggle-btn:hover {

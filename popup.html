@@ -10,7 +10,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1 class="title"><img src="/images/List.png" class="title-logo"/> Taskinatorify</h1>
+      <h1 class="title"><img src="/images/List.png" class="title-logo" /> Taskinatorify</h1>
       <div class="view-toggle">
         <button class="view-btn active" data-view="tasks">
           <i class="fas fa-tasks"></i>
@@ -28,19 +28,20 @@
     </div>
 
     <div id="tasks-view" class="view active">
-        <div class="input-container">
-          <input type="text" id="new-todo" placeholder="Add a new task..." />
-          <button class="deadline-toggle-btn">
-            <i class="fas fa-clock"></i>
-            Due date
+      <div class="input-container">
+        <input type="text" id="new-todo" placeholder="Add a new task..." />
+        <button class="deadline-toggle-btn">
+          <i class="fas fa-clock"></i>
+          Due date
+        </button>
+        <div class="deadline-cancel-btn-container hidden">
+          <input type="datetime-local" id="todo-deadline" class="deadline-input" />
+          <button class="cancel-toggle-btn">
+            <i class="fas fa-x"></i>
           </button>
-          <input
-            type="datetime-local"
-            id="todo-deadline"
-            class="deadline-input hidden"
-          />
-          <button class="add-btn">Add</button>
         </div>
+        <button class="add-btn">Add</button>
+      </div>
 
       <div class="filters">
         <select id="sort-filter">
